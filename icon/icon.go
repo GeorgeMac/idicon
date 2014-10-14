@@ -15,6 +15,7 @@ type Icon struct {
 	Data        [][]bool
 	BaseColour  color.Color
 	ComplColour color.Color
+	svgwidth    int
 }
 
 func (icn *Icon) String() string {
@@ -41,7 +42,7 @@ func (icn *Icon) Colours() (b, c string) {
 
 func (icn *Icon) Svg() string {
 	buf := &bytes.Buffer{}
-	fmt.Fprintf(buf, `<svg width="%d" height="%d">`, len(icn.Data)*50, len(icn.Data[0])*50)
+	fmt.Fprintf(buf, `<svg width="%d" height="%d">`, len(icn.Data)*icn.svgwidth, len(icn.Data[0])*icn.svgwidth)
 
 	rectstr := `<rect x="%[1]d" y="%[2]d" width="%[3]d" height="%[3]d" style="fill:#%[4]s"></rect>`
 	basecol, complcol := icn.Colours()
@@ -52,7 +53,7 @@ func (icn *Icon) Svg() string {
 			if icn.Data[i][j] {
 				colour = basecol
 			}
-			fmt.Fprintf(buf, rectstr, j*50, i*50, 50, colour)
+			fmt.Fprintf(buf, rectstr, j*icn.svgwidth, i*icn.svgwidth, icn.svgwidth, colour)
 		}
 	}
 
@@ -71,6 +72,7 @@ type Generator struct {
 	hashfunc              func() hash.Hash
 	distr                 distribution
 	width, height, hwidth int
+	svgwidth              int
 }
 
 func NewGenerator(width, height int, opts ...option) (*Generator, error) {
@@ -80,6 +82,7 @@ func NewGenerator(width, height int, opts ...option) (*Generator, error) {
 		width:    width,
 		height:   height,
 		hwidth:   hwidth,
+		svgwidth: 50,
 		distr:    simple(0, 255, float64(hwidth*height)),
 	}
 
@@ -93,7 +96,9 @@ func NewGenerator(width, height int, opts ...option) (*Generator, error) {
 }
 
 func (g *Generator) Generate(data []byte) *Icon {
-	icon := &Icon{}
+	icon := &Icon{
+		svgwidth: g.svgwidth,
+	}
 
 	// hash input data
 	hashed := g.hashfunc().Sum(data)
