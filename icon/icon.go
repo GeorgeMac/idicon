@@ -5,46 +5,39 @@ import (
 	"crypto/sha1"
 	"fmt"
 	"hash"
+	"image/color"
 	"math"
+
+	"github.com/GeorgeMac/idicon/colour"
 )
 
 type Icon struct {
-	Data                  []bool
-	Colour                []byte
-	Width, Height, HWidth int
+	Data        [][]bool
+	BaseColour  color.Color
+	ComplColour color.Color
 }
 
-func (i *Icon) String() string {
+func (icn *Icon) String() string {
 	buf := &bytes.Buffer{}
-	fmt.Fprintf(buf, "Base Colour [%x] \n", i.Colour)
+	fmt.Fprintf(buf, "Base Colour [%v, %v] \n", icn.BaseColour, icn.ComplColour)
 
-	odd := i.Width%2 != 0
-	lower, upper := 0, i.HWidth
-	for x := 0; x < i.Height; x++ {
-		seg := i.Data[lower:upper]
-		for y := 0; y < len(seg); y++ {
-			buf.Write(token(seg[y]))
+	for i := 0; i < len(icn.Data); i++ {
+		line := make([]byte, len(icn.Data[i])+1)
+		for j := 0; j < len(icn.Data[i]); j++ {
+			line[j] = token(icn.Data[i][j])
 		}
-		if odd {
-			seg = seg[0 : len(seg)-1]
-		}
-		for y := len(seg) - 1; y >= 0; y-- {
-			buf.Write(token(seg[y]))
-		}
-
-		lower = upper
-		upper += i.HWidth
-		buf.Write([]byte("\n"))
+		line[len(line)-1] = byte('\n')
+		buf.Write(line)
 	}
 
 	return buf.String()
 }
 
-func token(b bool) []byte {
+func token(b bool) byte {
 	if b {
-		return []byte("+")
+		return '+'
 	}
-	return []byte("-")
+	return '-'
 }
 
 type Generator struct {
@@ -73,27 +66,54 @@ func NewGenerator(width, height int, opts ...option) (*Generator, error) {
 }
 
 func (g *Generator) Generate(data []byte) *Icon {
-	icon := &Icon{
-		Data:   make([]bool, g.width*g.height),
-		Colour: make([]byte, 3),
-		Width:  g.width,
-		Height: g.height,
-		HWidth: g.hwidth,
-	}
+	icon := &Icon{}
 
 	// hash input data
 	hashed := g.hashfunc().Sum(data)
 
 	// use first three bytes as colour data
-	copy(icon.Colour, hashed[0:3])
+	col := color.RGBA{uint8(hashed[0]), uint8(hashed[1]), uint8(hashed[2]), 0xff}
+	idx := colour.Base.Index(col)
+	icon.BaseColour, icon.ComplColour = colour.Base[idx], colour.Complements[idx]
 
+	res := make([]bool, g.width*g.height)
 	// calculate index from distribution and flip corresponding bit
 	for _, d := range hashed[3:] {
 		idx := int(math.Floor(g.distr(float64(d))))
-		icon.Data[idx] = !icon.Data[idx]
+		res[idx] = !res[idx]
 	}
 
+	icon.Data = g.expand(res)
 	return icon
+}
+
+func (g *Generator) expand(b []bool) (data [][]bool) {
+	data = make([][]bool, g.height)
+
+	odd := g.width%2 != 0
+	lower, upper := 0, g.hwidth
+	for x := 0; x < g.height; x++ {
+		data[x] = make([]bool, g.width)
+		j := 0
+
+		seg := b[lower:upper]
+		for y := 0; y < len(seg); y++ {
+			data[x][j] = seg[y]
+			j++
+		}
+		if odd {
+			seg = seg[0 : len(seg)-1]
+		}
+		for y := len(seg) - 1; y >= 0; y-- {
+			data[x][j] = seg[y]
+			j++
+		}
+
+		lower = upper
+		upper += g.hwidth
+	}
+
+	return
 }
 
 type distribution func(x float64) float64

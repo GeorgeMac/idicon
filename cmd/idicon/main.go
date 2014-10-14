@@ -1,21 +1,21 @@
 package main
 
 import (
+	"flag"
 	"fmt"
-	"os"
 
 	"github.com/GeorgeMac/idicon/icon"
 )
 
 func main() {
-	if len(os.Args) < 2 {
-		fmt.Println("Usage idicon <name>")
-		return
-	}
+	var width, height int
+	flag.IntVar(&width, "w", 6, "Identicon Width")
+	flag.IntVar(&height, "h", 6, "Identicon Height")
+	flag.Parse()
 
-	arg := []byte(os.Args[1])
+	arg := []byte(flag.Arg(0))
 
-	generator, err := icon.NewGenerator(7, 6)
+	generator, err := icon.NewGenerator(width, height)
 	if err != nil {
 		panic(err)
 	}
