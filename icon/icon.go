@@ -33,6 +33,33 @@ func (icn *Icon) String() string {
 	return buf.String()
 }
 
+func (icn *Icon) Colours() (b, c string) {
+	br, bg, bb, _ := icn.BaseColour.RGBA()
+	cr, cg, cb, _ := icn.ComplColour.RGBA()
+	return fmt.Sprintf("%x%x%x", uint8(br), uint8(bg), uint8(bb)), fmt.Sprintf("%x%x%x", uint8(cr), uint8(cg), uint8(cb))
+}
+
+func (icn *Icon) Svg() string {
+	buf := &bytes.Buffer{}
+	fmt.Fprintf(buf, `<svg width="%d" height="%d">`, len(icn.Data)*50, len(icn.Data[0])*50)
+
+	rectstr := `<rect x="%[1]d" y="%[2]d" width="%[3]d" height="%[3]d" style="fill:#%[4]s"></rect>`
+	basecol, complcol := icn.Colours()
+
+	for i := 0; i < len(icn.Data); i++ {
+		for j := 0; j < len(icn.Data[i]); j++ {
+			colour := complcol
+			if icn.Data[i][j] {
+				colour = basecol
+			}
+			fmt.Fprintf(buf, rectstr, j*50, i*50, 50, colour)
+		}
+	}
+
+	fmt.Fprintf(buf, `</svg>`)
+	return buf.String()
+}
+
 func token(b bool) byte {
 	if b {
 		return '+'
