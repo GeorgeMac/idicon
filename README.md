@@ -15,7 +15,7 @@ It outputs both a couple of complementary RGBA colours and a printed representat
 For example `idicon GeorgeMac` produces the following:
 
 ```
-Base Colour [{110 161 255 255}, {255 177 113 255}]
+Colours [{110 161 255 255}, {255 177 113 255}]
 -++++-
 ++++++
 ------
@@ -29,7 +29,7 @@ You can alter the dimensions using the `-w` and `-h` options for width and heigh
 e.g. `idicon -w 10 -h 10 GeorgeMac` gives:
 
 ```
-Base Colour [{110 161 255 255}, {255 177 113 255}]
+Colours [{110 161 255 255}, {255 177 113 255}]
 +-+----+-+
 ----++----
 --+----+--

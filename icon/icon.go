@@ -19,7 +19,7 @@ type Icon struct {
 
 func (icn *Icon) String() string {
 	buf := &bytes.Buffer{}
-	fmt.Fprintf(buf, "Base Colour [%v, %v] \n", icn.BaseColour, icn.ComplColour)
+	fmt.Fprintf(buf, "Colours [%v, %v] \n", icn.BaseColour, icn.ComplColour)
 
 	for i := 0; i < len(icn.Data); i++ {
 		line := make([]byte, len(icn.Data[i])+1)
