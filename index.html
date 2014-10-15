@@ -49,7 +49,9 @@
         <h1>
 <a name="identicons-in-go" class="anchor" href="#identicons-in-go"><span class="octicon octicon-link"></span></a>Identicons in Go</h1>
 
-<p><img src="./images/georgemac.png" alt="GeorgeMac SVG" title="GeorgeMac"> <img src="./images/gobugme.png" alt="gobug.me SVG" title="gobug.me"> <img src="./images/incisively.png" alt="incisive.ly SVG"></p>
+<p><img src="./images/georgemac.png" alt="georgemac" title="georgemac">
+<img src="./images/gobugme.png" alt="gobug.me" title="gobug.me">
+<img src="./images/incisively.png" alt="incisive.ly" title="incisive.ly"></p>
 
 <p>Use the following to get the libs:</p>
 
@@ -82,9 +84,26 @@
 </pre></div>
 
 <h3>
-<a name="variadic-newgenerator-function" class="anchor" href="#variadic-newgenerator-function"><span class="octicon octicon-link"></span></a>Variadic NewGenerator Function</h3>
+<a name="newgenerator-with-variadic-options" class="anchor" href="#newgenerator-with-variadic-options"><span class="octicon octicon-link"></span></a>NewGenerator with variadic options</h3>
 
-<p><code>func NewGenerator(width, height int, opts ...option) *icon.Generator</code></p>
+<div class="highlight highlight-go"><pre><span class="kd">type</span> <span class="nx">option</span> <span class="kd">func</span><span class="p">(</span><span class="nx">g</span> <span class="o">*</span><span class="nx">Generator</span><span class="p">)</span> <span class="kt">error</span>
+
+<span class="kd">func</span> <span class="nx">NewGenerator</span><span class="p">(</span><span class="nx">width</span><span class="p">,</span> <span class="nx">height</span> <span class="kt">int</span><span class="p">,</span> <span class="o">...</span><span class="nx">option</span><span class="p">)</span> <span class="o">*</span><span class="nx">Generator</span> <span class="p">{</span> <span class="o">...</span> <span class="p">}</span>
+</pre></div>
+
+<p>Current available options include:</p>
+
+<div class="highlight highlight-go"><pre><span class="nx">icon</span><span class="p">.</span><span class="nx">UseSha1</span> <span class="c1">// pointless because it does this by default but meh</span>
+<span class="nx">icon</span><span class="p">.</span><span class="nx">UseMd5</span> <span class="c1">// use md5 hash function for generating identicons</span>
+<span class="nx">icon</span><span class="p">.</span><span class="nx">SvgSize</span><span class="p">(</span><span class="nx">size</span> <span class="kt">int</span><span class="p">)</span> <span class="c1">// set the width/height of the outputted svg squares</span>
+</pre></div>
+
+<p>Future options, currently <strong>NOT</strong> available:</p>
+
+<div class="highlight highlight-go"><pre><span class="nx">icon</span><span class="p">.</span><span class="nx">SetPalette</span><span class="p">(</span><span class="nx">basePalette</span><span class="p">,</span> <span class="nx">complPalette</span><span class="p">)</span>
+<span class="nx">icon</span><span class="p">.</span><span class="nx">Use</span><span class="o">*</span> <span class="c1">// any hash functions the community desire?</span>
+<span class="nx">icon</span><span class="p">.</span><span class="nx">UseHash</span><span class="p">(</span><span class="kd">func</span><span class="p">()</span> <span class="nx">hash</span><span class="p">.</span><span class="nx">Hash</span><span class="p">)</span> <span class="c1">// user supplied hash generator function</span>
+</pre></div>
       </section>
 
       <footer>
