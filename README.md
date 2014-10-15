@@ -33,3 +33,26 @@ fmt.Print(icn)
 // svg string representation
 fmt.Print(icn.Svg())
 ```
+
+### NewGenerator with variadic options
+
+```go
+type option func(g *Generator) error
+
+func NewGenerator(width, height int, ...option) *Generator { ... }
+```
+
+Current available options include:
+
+```go
+icon.UseSha1 // pointless because it does this by default but meh
+icon.UseMd5 // use md5 hash function for generating identicons
+icon.SvgSize(size int) // set the width/height of the outputted svg squares
+```
+
+Future options, currently **NOT** available:
+```go
+icon.SetPalette(basePalette, complPalette)
+icon.Use* // any hash functions the community desire?
+icon.UseHash(func() hash.Hash) // user supplied hash generator function
+```
