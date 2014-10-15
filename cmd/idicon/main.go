@@ -41,5 +41,7 @@ func main() {
 		fmt.Println(icon)
 	case "svg":
 		fmt.Println(icon.Svg())
+	case "html":
+		fmt.Printf("<html><body>%s</body></html>", icon.Svg())
 	}
 }
