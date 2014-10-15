@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=640">
+
+    <link rel="stylesheet" href="stylesheets/core.css" media="screen">
+    <link rel="stylesheet" href="stylesheets/mobile.css" media="handheld, only screen and (max-device-width:640px)">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+
+    <script type="text/javascript" src="javascripts/modernizr.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script type="text/javascript" src="javascripts/headsmart.min.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function () {
+        $('#main_content').headsmart()
+      })
+    </script>
+    <title>Idicon by GeorgeMac</title>
+  </head>
+
+  <body>
+    <a id="forkme_banner" href="https://github.com/GeorgeMac/idicon">View on GitHub</a>
+    <div class="shell">
+
+      <header>
+        <span class="ribbon-outer">
+          <span class="ribbon-inner">
+            <h1>Idicon</h1>
+            <h2>Identicon lib + command line printing tool</h2>
+          </span>
+          <span class="left-tail"></span>
+          <span class="right-tail"></span>
+        </span>
+      </header>
+
+      <section id="downloads">
+        <span class="inner">
+          <a href="https://github.com/GeorgeMac/idicon/zipball/master" class="zip"><em>download</em> .ZIP</a><a href="https://github.com/GeorgeMac/idicon/tarball/master" class="tgz"><em>download</em> .TGZ</a>
+        </span>
+      </section>
+
+
+      <span class="banner-fix"></span>
+
+
+      <section id="main_content">
+        <h1>
+<a name="identicons-in-go" class="anchor" href="#identicons-in-go"><span class="octicon octicon-link"></span></a>Identicons in Go</h1>
+
+<p>Use the following to get the libs:</p>
+
+<p><code>go get github.com/GeorgeMac/idicon</code></p>
+
+<p>Use the following to get the <code>idicon</code> command</p>
+
+<p><code>go get github.com/GeorgeMac/idicon/cmd/idicon</code></p>
+
+<p>See: <a href="https://github.com/GeorgeMac/idicon/tree/master/cmd/idicon">idicon command</a></p>
+
+<h3>
+<a name="lib-usage" class="anchor" href="#lib-usage"><span class="octicon octicon-link"></span></a>lib usage</h3>
+
+<p>Basically this:</p>
+
+<div class="highlight highlight-go"><pre><span class="nx">generator</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">icon</span><span class="p">.</span><span class="nx">NewGenerator</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="nx">icon</span><span class="p">.</span><span class="nx">UseMd5</span><span class="p">,</span> <span class="nx">icon</span><span class="p">.</span><span class="nx">SvgSize</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="c1">// handle error</span>
+<span class="p">}</span>
+
+<span class="c1">// use the generator for a given string input</span>
+<span class="nx">icn</span> <span class="o">:=</span> <span class="nx">generator</span><span class="p">.</span><span class="nx">Generate</span><span class="p">(</span><span class="s">`GeorgeMac`</span><span class="p">)</span>
+
+<span class="c1">// string representation</span>
+<span class="nx">fmt</span><span class="p">.</span><span class="nx">Print</span><span class="p">(</span><span class="nx">icn</span><span class="p">)</span>
+
+<span class="c1">// svg string representation</span>
+<span class="nx">fmt</span><span class="p">.</span><span class="nx">Print</span><span class="p">(</span><span class="nx">icn</span><span class="p">.</span><span class="nx">Svg</span><span class="p">())</span>
+</pre></div>
+
+<h3>
+<a name="variadic-newgenerator-function" class="anchor" href="#variadic-newgenerator-function"><span class="octicon octicon-link"></span></a>Variadic NewGenerator Function</h3>
+
+<p><code>func NewGenerator(width, height int, opts ...option) *icon.Generator</code></p>
+      </section>
+
+      <footer>
+        <span class="ribbon-outer">
+          <span class="ribbon-inner">
+            <p>this project by <a href="https://github.com/GeorgeMac">GeorgeMac</a> can be found on <a href="https://github.com/GeorgeMac/idicon">GitHub</a></p>
+          </span>
+          <span class="left-tail"></span>
+          <span class="right-tail"></span>
+        </span>
+        <p>Generated with <a href="http://pages.github.com">GitHub Pages</a> using Merlot</p>
+        <span class="octocat"></span>
+      </footer>
+
+    </div>
+
+    
+  </body>
+</html>
