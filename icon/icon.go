@@ -44,7 +44,7 @@ func (icn *Icon) Svg() string {
 	buf := &bytes.Buffer{}
 	fmt.Fprintf(buf, `<svg width="%d" height="%d">`, len(icn.Data)*icn.svgwidth, len(icn.Data[0])*icn.svgwidth)
 
-	rectstr := `<rect x="%[1]d" y="%[2]d" width="%[3]d" height="%[3]d" style="fill:#%[4]s"></rect>`
+	rectstr := `<rect x="%d" y="%d" width="%d" height="%d" style="fill:#%s"></rect>`
 	basecol, complcol := icn.Colours()
 
 	for i := 0; i < len(icn.Data); i++ {
@@ -53,7 +53,8 @@ func (icn *Icon) Svg() string {
 			if icn.Data[i][j] {
 				colour = basecol
 			}
-			fmt.Fprintf(buf, rectstr, j*icn.svgwidth, i*icn.svgwidth, icn.svgwidth, colour)
+			x, y, wh := j*icn.svgwidth, i*icn.svgwidth, icn.svgwidth
+			fmt.Fprintf(buf, rectstr, x, y, wh, wh, colour)
 		}
 	}
 
