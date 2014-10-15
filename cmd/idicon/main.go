@@ -10,7 +10,7 @@ import (
 
 var flags = flag.FlagSet{
 	Usage: func() {
-		fmt.Fprintf(os.Stderr, `Usage: idicon [print | svg] [-h "height" | -w "width" | -x "svg size"] <input string>`)
+		fmt.Fprintf(os.Stderr, `Usage: idicon [print | svg] [-h "height" | -w "width" | -x "svg size"] <input string>\n`)
 	},
 }
 
