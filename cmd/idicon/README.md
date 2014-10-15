@@ -71,3 +71,9 @@ This command will produce the following:
     <rect x="200" y="200" width="50" height="50" style="fill:#76ffc4"></rect>
 </svg>
 ```
+
+### HTML
+
+`idicon html -w 5 -h 5 GeorgeMac`
+
+Same as above but wrapped in `<html><body></body></html>`!
