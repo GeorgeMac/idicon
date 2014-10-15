@@ -1,6 +1,10 @@
 Identicons in Go
 ================
 
+![georgemac](https://raw.githubusercontent.com/GeorgeMac/idicon/gh-pages/images/georgemac.png)
+![gobug.me](https://raw.githubusercontent.com/GeorgeMac/idicon/gh-pages/images/gobugme.png)
+![incisive.ly](https://raw.githubusercontent.com/GeorgeMac/idicon/gh-pages/images/incisively.png)
+
 Use the following to get the libs:
 
 `go get github.com/GeorgeMac/idicon`
