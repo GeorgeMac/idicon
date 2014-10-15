@@ -17,7 +17,7 @@ func UseMd5(g *Generator) error {
 	return nil
 }
 
-func SetWidth(w int) option {
+func SvgSize(w int) option {
 	return func(g *Generator) error {
 		g.svgwidth = w
 		return nil

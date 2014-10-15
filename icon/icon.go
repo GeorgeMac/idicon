@@ -27,7 +27,7 @@ func (icn *Icon) String() string {
 		for j := 0; j < len(icn.Data[i]); j++ {
 			line[j] = token(icn.Data[i][j])
 		}
-		line[len(line)-1] = byte('\n')
+		line[len(line)-1] = '\n'
 		buf.Write(line)
 	}
 

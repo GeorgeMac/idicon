@@ -8,18 +8,28 @@ import (
 	"github.com/GeorgeMac/idicon/icon"
 )
 
+var flags = flag.FlagSet{
+	Usage: func() {
+		fmt.Fprintf(os.Stderr, `Usage: idicon [print | svg] [-h "height" | -w "width" | -x "svg size"] <input string>`)
+	},
+}
+
 func main() {
-	funcn := os.Args[1]
-	fset := flag.FlagSet{}
 	var width, height, svgx int
-	fset.IntVar(&width, "w", 6, "Identicon Width")
-	fset.IntVar(&height, "h", 6, "Identicon Height")
-	fset.IntVar(&svgx, "x", 30, "SVG scale")
-	fset.Parse(os.Args[2:])
+	flags.IntVar(&width, "w", 6, "Identicon Width")
+	flags.IntVar(&height, "h", 6, "Identicon Height")
+	flags.IntVar(&svgx, "x", 30, "SVG scale")
 
-	arg := []byte(fset.Arg(1))
+	if len(os.Args) < 3 {
+		flags.Usage()
+		return
+	}
 
-	generator, err := icon.NewGenerator(width, height, icon.SetWidth(svgx))
+	funcn := os.Args[1]
+	flags.Parse(os.Args[2:])
+	arg := []byte(flags.Arg(0))
+
+	generator, err := icon.NewGenerator(width, height, icon.SvgSize(svgx))
 	if err != nil {
 		panic(err)
 	}
