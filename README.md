@@ -1,4 +1,4 @@
-Identicons in Go
+[Identicons](http://en.wikipedia.org/wiki/Identicon) in Go
 ================
 
 ![georgemac](https://raw.githubusercontent.com/GeorgeMac/idicon/gh-pages/images/georgemac.png)
