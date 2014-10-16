@@ -2,14 +2,13 @@
 =========================
 
 The command is mostly just a proof of concept.
-It outputs both a couple of complementary RGBA colours and a printed representation of the identicon.
+It doesn’t currently support all the configurable parameters provided by the library.
 
 ### Printing to terminal
 
-For example `idicon print GeorgeMac` produces the following:
+For example `idicon print GeorgeMac` produces an ASCII representation like the following:
 
 ```
-Colours [{110 161 255 255}, {255 177 113 255}]
 -++++-
 ++++++
 ------
@@ -23,7 +22,6 @@ You can alter the dimensions using the `-w` and `-h` options for width and heigh
 e.g. `idicon print -w 10 -h 10 GeorgeMac` gives:
 
 ```
-Colours [{110 161 255 255}, {255 177 113 255}]
 +-+----+-+
 ----++----
 --+----+--
@@ -40,7 +38,7 @@ Colours [{110 161 255 255}, {255 177 113 255}]
 
 `idicon svg -w 5 -h 5 GeorgeMac`
 
-This command will produce the following:
+This command will produce something similar to the following:
 
 ```xml
 <svg width="250" height="250">
