@@ -83,7 +83,7 @@ func NewGenerator(width, height int, opts ...option) (*Generator, error) {
 		height:   height,
 		hwidth:   hwidth,
 		svgwidth: 50,
-		distr:    simple(0, 255, float64(hwidth*height)),
+		distr:    gauss(0, 255, float64(hwidth*height)),
 	}
 
 	for _, opt := range opts {
@@ -157,7 +157,13 @@ func normal(mean, stdv float64) distribution {
 	}
 }
 
-func simple(lower, upper, factor float64) distribution {
+func simple(lower, upper, factor float64) func(float64) float64 {
+	return func(x float64) float64 {
+		return (x / (upper - lower)) * factor
+	}
+}
+
+func gauss(lower, upper, factor float64) distribution {
 	mean := lower + ((upper - lower) / 2.0)
 	stdv := mean / 3.0
 	dist := normal(mean, stdv)
