@@ -83,7 +83,7 @@ func NewGenerator(width, height int, opts ...option) (*Generator, error) {
 		height:   height,
 		hwidth:   hwidth,
 		svgwidth: 50,
-		distr:    gauss(0, 255, float64(hwidth*height)),
+		distr:    gauss,
 	}
 
 	for _, opt := range opts {
@@ -111,7 +111,8 @@ func (g *Generator) Generate(data []byte) *Icon {
 	res := make([]bool, g.width*g.height)
 	// calculate index from distribution and flip corresponding bit
 	for _, d := range hashed[3:] {
-		idx := int(math.Floor(g.distr(float64(d))))
+		f := g.distr(0, 255, float64(g.hwidth*g.height))
+		idx := int(math.Floor(f(float64(d))))
 		res[idx] = !res[idx]
 	}
 
@@ -148,27 +149,30 @@ func (g *Generator) expand(b []bool) (data [][]bool) {
 	return
 }
 
-type distribution func(x float64) float64
+// distribution funcs
+type funcx func(x float64) float64
 
-func normal(mean, stdv float64) distribution {
+type distribution func(lower, upper, scale float64) funcx
+
+func simple(lower, upper, scale float64) funcx {
 	return func(x float64) float64 {
-		expn := math.Pow(x-mean, 2.0) / (2.0 * math.Pow(stdv, 2.0))
-		return (1.0 / (stdv * (math.Sqrt(2.0 * math.Pi))) * math.Exp(-1.0*expn))
+		return (x / (upper - lower)) * scale
 	}
 }
 
-func simple(lower, upper, factor float64) func(float64) float64 {
-	return func(x float64) float64 {
-		return (x / (upper - lower)) * factor
-	}
-}
-
-func gauss(lower, upper, factor float64) distribution {
+func gauss(lower, upper, scale float64) funcx {
 	mean := lower + ((upper - lower) / 2.0)
 	stdv := mean / 3.0
 	dist := normal(mean, stdv)
-	scale := factor / dist(mean)
+	nscale := scale / dist(mean)
 	return func(x float64) float64 {
-		return dist(x) * scale
+		return dist(x) * nscale
+	}
+}
+
+func normal(mean, stdv float64) funcx {
+	return func(x float64) float64 {
+		expn := math.Pow(x-mean, 2.0) / (2.0 * math.Pow(stdv, 2.0))
+		return (1.0 / (stdv * (math.Sqrt(2.0 * math.Pi))) * math.Exp(-1.0*expn))
 	}
 }
