@@ -5,6 +5,17 @@ import (
 	"image/color"
 )
 
+// Palette wraps a color.Palette
+// It allows for ease of retrieving a
+// colour.Colour using color.Palette.Convert
+type Palette struct {
+	color.Palette
+}
+
+func (p Palette) Nearest(c color.Color) *Colour {
+	return &Colour{p.Palette.Convert(c)}
+}
+
 // Colour implements color.Color but
 // can be printed in a web friendly
 // hex value.
@@ -22,19 +33,22 @@ func (c *Colour) RGBA() (r, g, b, a uint32) {
 
 func (c *Colour) String() string {
 	r, g, b, _ := c.RGBA()
-	return fmt.Sprintf("#%x%x%x", uint8(r), uint8(g), uint8(b))
+	return fmt.Sprintf("#%s%s%s", hex(r), hex(g), hex(b))
 }
 
-var Base = color.Palette([]color.Color{
-	color.RGBA{0x6e, 0xa1, 0xff, 0xff},
-	color.RGBA{0xf2, 0x80, 0x74, 0xff},
-	color.RGBA{0xf7, 0xb5, 0x6b, 0xff},
-	color.RGBA{0xfa, 0xeb, 0x78, 0xff},
-})
+func hex(u uint32) (s string) {
+	v := uint8(u)
+	if v < 0x10 {
+		s += "0"
+	}
+	return fmt.Sprintf("%s%x", s, v)
+}
 
-var Complements = color.Palette([]color.Color{
-	color.RGBA{0xff, 0xb1, 0x71, 0xff},
-	color.RGBA{0x76, 0xff, 0xc4, 0xff},
-	color.RGBA{0x81, 0x6b, 0xff, 0xff},
-	color.RGBA{0xed, 0x76, 0xff, 0xff},
-})
+var Default = Palette{
+	color.Palette{
+		NewColour(0x6e, 0xa1, 0xff),
+		NewColour(0xf2, 0x80, 0x74),
+		NewColour(0xf7, 0xb5, 0x6b),
+		NewColour(0xfa, 0xeb, 0x78),
+	},
+}

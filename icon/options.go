@@ -21,13 +21,13 @@ func UseHash(h func() hash.Hash) option {
 // By default idicon uses a normal distribution.
 // This function swaps it for a linear one.
 func LinearDistribution(g *Generator) error {
-	g.distr = simple
+	g.distr = linear
 	return nil
 }
 
-func SvgSize(w int) option {
+func With(props Props) option {
 	return func(g *Generator) error {
-		g.svgwidth = w
+		g.props = props
 		return nil
 	}
 }
