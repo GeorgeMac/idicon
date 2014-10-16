@@ -1,6 +1,29 @@
 package colour
 
-import "image/color"
+import (
+	"fmt"
+	"image/color"
+)
+
+// Colour implements color.Color but
+// can be printed in a web friendly
+// hex value.
+type Colour struct {
+	color.Color
+}
+
+func NewColour(r, g, b uint8) *Colour {
+	return &Colour{color.RGBA{r, g, b, 0xff}}
+}
+
+func (c *Colour) RGBA() (r, g, b, a uint32) {
+	return c.Color.RGBA()
+}
+
+func (c *Colour) String() string {
+	r, g, b, _ := c.RGBA()
+	return fmt.Sprintf("#%x%x%x", uint8(r), uint8(g), uint8(b))
+}
 
 var Base = color.Palette([]color.Color{
 	color.RGBA{0x6e, 0xa1, 0xff, 0xff},
