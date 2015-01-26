@@ -15,7 +15,7 @@ var flags = flag.FlagSet{
 	},
 }
 
-func Print(icn *icon.Icon) string {
+func print(icn *icon.Icon) string {
 	buf := &bytes.Buffer{}
 	for i := 0; i < len(icn.Data); i++ {
 		line := make([]byte, len(icn.Data[i])+1)
@@ -62,7 +62,7 @@ func main() {
 
 	switch funcn {
 	case "print":
-		fmt.Print(Print(icon))
+		fmt.Print(print(icon))
 	case "svg":
 		fmt.Println(icon)
 	case "html":

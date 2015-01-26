@@ -25,6 +25,9 @@ func LinearDistribution(g *Generator) error {
 	return nil
 }
 
+// With return an option which sets the Props
+// structure within a Generator to the provided
+// struct `props`.
 func With(props Props) option {
 	return func(g *Generator) error {
 		g.props = props

@@ -7,6 +7,8 @@ import (
 	"math"
 )
 
+// Generator structure contains the schematics for generating
+// identicons from strings.
 type Generator struct {
 	hashfunc              func() hash.Hash
 	distr                 distribution
@@ -14,6 +16,8 @@ type Generator struct {
 	width, height, hwidth int
 }
 
+// NewGenerator returns a pointer to a generator or an error
+// if there was a problem applying a provided option type.
 func NewGenerator(width, height int, opts ...option) (*Generator, error) {
 	hwidth := int(math.Ceil(float64(width) / 2.0))
 	g := &Generator{
@@ -34,6 +38,8 @@ func NewGenerator(width, height int, opts ...option) (*Generator, error) {
 	return g, nil
 }
 
+// Generate returns a pointer to an icon for a
+// provided slice of bytes.
 func (g *Generator) Generate(data []byte) *Icon {
 	icon := &Icon{
 		props: g.props,
